@@ -136,6 +136,33 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!1 &486764850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 486764851}
+  m_Layer: 0
+  m_Name: CameraObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &486764851
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 486764850}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 14, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2100901206}
+  m_Father: {fileID: 0}
 --- !u!1 &577920102
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +520,7 @@ MonoBehaviour:
   prefabTunnelUp: {fileID: 100000, guid: fb9ad050a78d8ac489c31f73832b44ed, type: 2}
   startTunnel: {fileID: 1131004203}
   ball: {fileID: 577920102}
-  ballCamera: {fileID: 2100901205}
+  ballCamera: {fileID: 486764850}
   size: 13
   life: 17
   tunnelLength: 10
@@ -595,8 +622,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2100901201}
-  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106829}
-  m_LocalPosition: {x: 0, y: 15, z: 0}
+  m_LocalRotation: {x: .615661502, y: 0, z: 0, w: .788010776}
+  m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 486764851}

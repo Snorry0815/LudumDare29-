@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class Bonus : MonoBehaviour {
-	public GameManager GameManager{set;get;}
 	public int Points{get;set;}
 	private bool isSwitch = false;
 
@@ -13,10 +12,10 @@ public class Bonus : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision)
 	{
-		this.GameManager.AddPoints(Points);
+		SignalSystem.SignalTriggered(new PointSignal(Points));
 		if(isSwitch)
 		{
-			this.GameManager.HitSwitch();
+			SignalSystem.SignalTriggered(new OpenForceFieldSignal());
 		}
 	}
 }

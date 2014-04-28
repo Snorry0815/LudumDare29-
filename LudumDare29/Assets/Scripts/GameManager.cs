@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour, SignalListener<DamageSignal>, SignalListener<PointSignal>, SignalListener<OpenForceFieldSignal> 
+{
 
 	public GameObject prefabTile;
 	public GameObject prefabForceField;
@@ -36,9 +37,32 @@ public class GameManager : MonoBehaviour {
 
 	void Start () 
 	{
+		Reset();
+
+
+		SignalSystem.AddListener<DamageSignal>(this);
+		SignalSystem.AddListener<PointSignal>(this);
+		SignalSystem.AddListener<OpenForceFieldSignal>(this);
+	}
+
+	private void Reset()
+	{
+
 		centers.Add(center);
 		tunnels.Add(startTunnel);
 		Spawn();
+	}
+
+	public void SignalTrigered(DamageSignal damage)
+	{
+		ChangeLife(damage.Damage);
+	}
+	public void SignalTrigered(PointSignal points)
+	{
+	}
+	public void SignalTrigered(OpenForceFieldSignal open)
+	{	
+		HitSwitch();
 	}
 
 	void Update () 
@@ -83,7 +107,6 @@ public class GameManager : MonoBehaviour {
 	{
 		Vector3 pos = centers[centers.Count - 1];
 		this.forceField = Instantiate(prefabForceField, pos, Quaternion.identity) as GameObject;
-		this.forceField.GetComponent<Damage>().GameManager = this;
 
 		this.tiles = new GameObject();
 		this.tiles.name = "Tiles";
@@ -167,7 +190,6 @@ public class GameManager : MonoBehaviour {
 	{
 		GameObject tile = Instantiate(prefabTile, pos, Quaternion.identity) as GameObject;
 		Bonus bonus = tile.GetComponent<Bonus>();
-		bonus.GameManager = this;
 		if(Random.value > 0.9f)
 		{
 			tile.GetComponent<MeshRenderer>().material.color = Color.red;
@@ -184,12 +206,7 @@ public class GameManager : MonoBehaviour {
 		this.life += change;
 		this.GetComponent<LifeBar>().SetLife(this.life);
 	}
-
-	public void AddPoints(int point)
-	{
-
-	}
-
+	
 	public void HitSwitch()
 	{
 		--this.switchCount;

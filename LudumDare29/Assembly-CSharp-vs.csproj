@@ -53,6 +53,15 @@
      <Compile Include="Assets\Scripts\InputManager.cs" />
      <Compile Include="Assets\Scripts\LifeBar.cs" />
      <Compile Include="Assets\Scripts\MaxBounce.cs" />
+     <Compile Include="Assets\Scripts\SignalSystem\ISignal.cs" />
+     <Compile Include="Assets\Scripts\SignalSystem\ISignalHandler.cs" />
+     <Compile Include="Assets\Scripts\SignalSystem\ISignalListener.cs" />
+     <Compile Include="Assets\Scripts\SignalSystem\SignalHandler.cs" />
+     <Compile Include="Assets\Scripts\SignalSystem\SignalListener.cs" />
+     <Compile Include="Assets\Scripts\SignalSystem\SignalSystem.cs" />
+     <Compile Include="Assets\Scripts\Signals\DamageSignal.cs" />
+     <Compile Include="Assets\Scripts\Signals\OpenForceFieldSignal.cs" />
+     <Compile Include="Assets\Scripts\Signals\PointSignal.cs" />
      <Compile Include="Assets\Scripts\Tile.cs" />
      <Compile Include="Assets\Water (Basic)\Sources\Scripts\WaterSimple.cs" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
