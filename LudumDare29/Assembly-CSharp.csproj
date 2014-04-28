@@ -46,10 +46,14 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Bonus.cs" />
      <Compile Include="Assets\Scripts\CreateMesh.cs" />
+     <Compile Include="Assets\Scripts\Damage.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\InputManager.cs" />
+     <Compile Include="Assets\Scripts\LifeBar.cs" />
      <Compile Include="Assets\Scripts\MaxBounce.cs" />
+     <Compile Include="Assets\Scripts\Tile.cs" />
      <Compile Include="Assets\Water (Basic)\Sources\Scripts\WaterSimple.cs" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
      <None Include="Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
