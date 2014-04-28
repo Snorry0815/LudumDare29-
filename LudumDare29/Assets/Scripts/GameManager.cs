@@ -15,11 +15,13 @@ public class GameManager
 	public GameObject prefabTunnelStraight;	
 	public GameObject prefabTunnelLeft;
 	public GameObject prefabTunnelUp;
+	public GameObject prefabBonus;
 
 	private GameObject startTunnel = null;
 
 	public GameObject ball;
 	public GameObject ballCamera;
+	public GUIText pointsText;
 
 	public int size;
 
@@ -39,10 +41,17 @@ public class GameManager
 	private GameObject deleteTunnel = null;
 	private GameObject tiles = null;
 	private bool deleteTiles = false;
+	private int points = 0;
+	private GameObject bonuses = null;
+	private GameObject nextB = null;
+
+	private float hard = 0.9f;
 
 	void Start () 
 	{
+		Time.timeScale = 0;
 		Reset();
+		GameState.GetInstance().MainState = MainState.MENU;
 
 		SignalSystem.AddListener<DamageSignal>(this);
 		SignalSystem.AddListener<PointSignal>(this);
@@ -52,6 +61,23 @@ public class GameManager
 
 	private void Reset()
 	{
+		hard = 0.9f;
+
+		if(this.bonuses != null)
+		{
+			Destroy(this.bonuses);
+			this.bonuses = null;
+		}
+		if(this.nextB != null)
+		{
+			Destroy(this.nextB);
+			this.nextB = null;
+		}
+		this.ballCamera.transform.position = new Vector3(0.0f,14.0f,0.0f);
+
+		this.points = 0;
+		this.pointsText.text = this.points + "";
+
 		if(this.startTunnel != null)
 		{
 			Destroy(this.startTunnel);
@@ -102,9 +128,12 @@ public class GameManager
 	public void SignalTrigered(DamageSignal damage)
 	{
 		ChangeLife(damage.Damage);
+		SignalSystem.SignalTriggered(new PlaySound(4));
 	}
 	public void SignalTrigered(PointSignal points)
-	{
+	{		
+		this.points += points.Points;
+		this.pointsText.text = this.points + "";
 	}
 	public void SignalTrigered(OpenForceFieldSignal open)
 	{	
@@ -115,7 +144,7 @@ public class GameManager
 		Reset();
 	}
 
-	void Update () 
+	void Update() 
 	{
 		Vector3 camPos = ballCamera.transform.position;
 		float y = ballCamera.transform.position.y - ball.transform.position.y;
@@ -156,6 +185,21 @@ public class GameManager
 
 	void Spawn()
 	{
+		if(this.nextB != null)
+		{
+			Destroy(this.nextB);
+			this.nextB = null;
+		}
+
+		if(this.bonuses != null)
+		{
+			this.nextB = this.bonuses;
+			this.bonuses = null;
+		}
+
+		this.bonuses = new GameObject("Banuses");
+
+
 		Vector3 pos = centers[centers.Count - 1];
 		this.forceField = Instantiate(prefabForceField, pos, Quaternion.identity) as GameObject;
 
@@ -233,6 +277,21 @@ public class GameManager
 			tunnel.name = "TunnelStraight";
 			break;
 		}
+
+
+		float spawnCount = 15;
+		for(float i=0;i<spawnCount;++i)
+		{
+			Vector3 p = pos * i/spawnCount + centers[centers.Count-1] * (1.0f - i/spawnCount);
+			p.x += Mathf.Cos(p.y/10f) * 5f;
+			p.z += Mathf.Sin(p.y/10f) * 5f;
+			p.y -= 15f;
+
+			GameObject b = Instantiate(prefabBonus, p, Quaternion.identity) as GameObject;
+
+			b.transform.parent = this.bonuses.transform;
+		}
+
 		centers.Add(pos);
 		tunnels.Add(tunnel);
 	}
@@ -243,7 +302,7 @@ public class GameManager
 		Bonus bonus = tile.GetComponent<Bonus>();
 		if(Random.value > 0.9f)
 		{
-			tile.GetComponent<MeshRenderer>().material.color = Color.red;
+			tile.GetComponent<MeshRenderer>().material.color = Color.green;
 			++this.switchCount;
 			bonus.IsSwitch();
 		}
@@ -256,6 +315,11 @@ public class GameManager
 	{
 		this.life += change;
 		this.GetComponent<LifeBar>().SetLife(this.life);
+		if(this.life  <= 0.0f)
+		{
+			GameState.GetInstance().GameSubState = GameSubState.LOST;
+			Time.timeScale =0.0f;
+		}
 	}
 	
 	public void HitSwitch()
@@ -264,11 +328,19 @@ public class GameManager
 		if(this.switchCount <= 0)
 		{
 			if(this.forceField != null)
-			{
+			{	
+				SignalSystem.SignalTriggered(new PlaySound(3));
 				Destroy (this.forceField);
 				this.forceField = null;
 				this.deleteTiles = true;
+				this.life = Mathf.Min (this.life + 5 , 17);
+				this.hard -= 0.1f;
 			}
 		}
+	}
+
+	public int GetPoints()
+	{
+		return this.points;
 	}
 }

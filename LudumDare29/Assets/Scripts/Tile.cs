@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision)
 	{
+		SignalSystem.SignalTriggered(new PlaySound(1));
 		Destroy(this.gameObject);
 	}
 }

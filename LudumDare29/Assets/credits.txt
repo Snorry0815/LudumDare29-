@@ -1,0 +1,7 @@
+contribution: music
+Author: Sudocolon
+Source: http://opengameart.org/content/iso1nhab1tans
+
+contribution: buttons
+Author: mikhog
+Source: http://opengameart.org/content/play-pause-mute-and-unmute-buttons

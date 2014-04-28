@@ -11,25 +11,31 @@ public class InputManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Input.GetKeyDown(KeyCode.UpArrow)) 
+		if (Input.GetKey(KeyCode.UpArrow)) 
 		{
 			rigidbody.AddForce(new Vector3(0f,0f,this.force));
 		}
-		else if (Input.GetKeyDown(KeyCode.DownArrow)) 
+		else if (Input.GetKey(KeyCode.DownArrow)) 
 		{
 			rigidbody.AddForce(new Vector3(0f,0f,-this.force));
 		}
-		else if (Input.GetKeyDown(KeyCode.LeftArrow)) 
+		else if (Input.GetKey(KeyCode.LeftArrow)) 
 		{
 			rigidbody.AddForce(new Vector3(-this.force,0f,0f));
 		}
-		else if (Input.GetKeyDown(KeyCode.RightArrow)) 
+		else if (Input.GetKey(KeyCode.RightArrow)) 
 		{
 			rigidbody.AddForce(new Vector3(this.force,0f,0f));
 		}
-		else if (Input.GetKeyDown(KeyCode.Space)) 
+		else if (Input.GetKey(KeyCode.Space)) 
 		{
-			SignalSystem.SignalTriggered(new ResetSignal());
+			GameState.GetInstance().MainState = MainState.GAME;
+			if(GameState.GetInstance().GameSubState == GameSubState.LOST)
+			{
+				GameState.GetInstance().GameSubState = GameSubState.RUNNING;
+				SignalSystem.SignalTriggered(new ResetSignal());
+			}
+			Time.timeScale = 1;
 		}
 	}
 }

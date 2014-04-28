@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEditor;
+//using UnityEditor;
 
 public class CreateMesh : MonoBehaviour {
 	public Vector3[] vertices;
@@ -35,9 +35,9 @@ public class CreateMesh : MonoBehaviour {
 		//string newFolderPath = AssetDatabase.GUIDToAssetPath(guid);
 		//AssetDatabase.AddObjectToAsset(mesh , newFolderPath);
 
-		string filePath = EditorUtility.SaveFilePanelInProject("Save Procedural Mesh", "Procedural Mesh", "asset", "");
-		if (filePath == "") return;
-		AssetDatabase.CreateAsset(mesh, filePath);    
+		//string filePath = EditorUtility.SaveFilePanelInProject("Save Procedural Mesh", "Procedural Mesh", "asset", "");
+		//if (filePath == "") return;
+		//AssetDatabase.CreateAsset(mesh, filePath);    
 	}
 	
 	// Update is called once per frame
