@@ -27,5 +27,9 @@ public class InputManager : MonoBehaviour {
 		{
 			rigidbody.AddForce(new Vector3(this.force,0f,0f));
 		}
+		else if (Input.GetKeyDown(KeyCode.Space)) 
+		{
+			SignalSystem.SignalTriggered(new ResetSignal());
+		}
 	}
 }

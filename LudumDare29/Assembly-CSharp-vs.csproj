@@ -62,6 +62,7 @@
      <Compile Include="Assets\Scripts\Signals\DamageSignal.cs" />
      <Compile Include="Assets\Scripts\Signals\OpenForceFieldSignal.cs" />
      <Compile Include="Assets\Scripts\Signals\PointSignal.cs" />
+     <Compile Include="Assets\Scripts\Signals\ResetSignal.cs" />
      <Compile Include="Assets\Scripts\Tile.cs" />
      <Compile Include="Assets\Water (Basic)\Sources\Scripts\WaterSimple.cs" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />

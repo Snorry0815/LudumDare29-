@@ -2,7 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour, SignalListener<DamageSignal>, SignalListener<PointSignal>, SignalListener<OpenForceFieldSignal> 
+public class GameManager 
+		: MonoBehaviour
+		, SignalListener<DamageSignal>
+		, SignalListener<PointSignal>
+		, SignalListener<OpenForceFieldSignal> 
+		, SignalListener<ResetSignal>
 {
 
 	public GameObject prefabTile;
@@ -11,7 +16,7 @@ public class GameManager : MonoBehaviour, SignalListener<DamageSignal>, SignalLi
 	public GameObject prefabTunnelLeft;
 	public GameObject prefabTunnelUp;
 
-	public GameObject startTunnel;
+	private GameObject startTunnel = null;
 
 	public GameObject ball;
 	public GameObject ballCamera;
@@ -39,14 +44,55 @@ public class GameManager : MonoBehaviour, SignalListener<DamageSignal>, SignalLi
 	{
 		Reset();
 
-
 		SignalSystem.AddListener<DamageSignal>(this);
 		SignalSystem.AddListener<PointSignal>(this);
 		SignalSystem.AddListener<OpenForceFieldSignal>(this);
+		SignalSystem.AddListener<ResetSignal>(this);
 	}
 
 	private void Reset()
 	{
+		if(this.startTunnel != null)
+		{
+			Destroy(this.startTunnel);
+		}
+		this.startTunnel = Instantiate(prefabTunnelStraight, Vector3.zero, Quaternion.identity) as GameObject;
+
+		centers.Clear();
+		foreach(GameObject tunnel in tunnels)
+		{
+			Destroy(tunnel);
+		}
+		this.tunnels.Clear();
+		if(this.tiles != null)
+		{
+			Destroy(this.tiles);
+			this.tiles = null;
+		}
+
+		this.ball.transform.position = new Vector3(0.0f, 4.0f, 0.0f);
+
+		this.life = 17;
+		ChangeLife(0);
+		this.switchCount = 0;
+		if(this.forceField != null)
+		{
+			Destroy(this.forceField);
+			this.forceField = null;
+		}
+
+		this.center = Vector3.zero;
+		this.lastPos = Vector3.zero;
+
+		this.d = 15f;
+		if(this.deleteTunnel != null)
+		{
+			Destroy(this.deleteTunnel);
+			this.deleteTunnel = null;
+		}
+		
+		this.deleteTunnel = null;
+		this.deleteTiles = false;
 
 		centers.Add(center);
 		tunnels.Add(startTunnel);
@@ -63,6 +109,10 @@ public class GameManager : MonoBehaviour, SignalListener<DamageSignal>, SignalLi
 	public void SignalTrigered(OpenForceFieldSignal open)
 	{	
 		HitSwitch();
+	}
+	public void SignalTrigered(ResetSignal reset)
+	{
+		Reset();
 	}
 
 	void Update () 
@@ -86,6 +136,7 @@ public class GameManager : MonoBehaviour, SignalListener<DamageSignal>, SignalLi
 					{
 						this.deleteTiles  = false;
 						Destroy(this.tiles);
+						this.tiles = null;
 						Spawn();
 					}
 				}
